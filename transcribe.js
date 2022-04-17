@@ -13,12 +13,8 @@ const client = new speech.SpeechClient();
 const dir = path.join('C:', 'Users', 'mweis', 'Downloads', 'foolish_ambitions')
 
 async function transcriptAndRename(filename) {
-    /**
-     * TODO(developer): Uncomment the following lines before running the sample.
-     */
     const oldPath = path.join(dir, filename);
     console.log("Old path: " + oldPath)
-    //const oldPath = "C:\\Users\\mweis\\Downloads\\foolish_ambitions\\4286497098#40(524448000).mp3";
     const model = 'video';
     const encoding = 'MP3';
     const sampleRateHertz = 48000;
@@ -47,18 +43,17 @@ async function transcriptAndRename(filename) {
         .join('\n').replace(/[^a-zA-Z ]/g, "");
     console.log('Transcription: ', transcription);
     if (transcription != "") {
-        const newPath = path.join("C:\\Users\\mweis\\Downloads\\foolish_ambitions_transcribed\\", transcription + ".mp3");
+        const newPath = path.join('C:', 'Users', 'mweis', 'Downloads', 'foolish_ambitions_transcribed', transcription + ".mp3")
         console.log('newpath', newPath);
         fs.renameSync(oldPath, newPath)
     }
     else {
         console.log("Could not transcribe: " + oldPath)
-        const newPath = path.join("C:\\Users\\mweis\\Downloads\\trash\\", filename);
+        const newPath = path.join('C:', 'Users', 'mweis', 'Downloads', 'trash', filename);
         console.log('newpath', newPath);
         fs.renameSync(oldPath, newPath)
     }
 }
-//transcriptAndRename("16094230.mp3")
 
 let count = 0
 let sleep = require('util').promisify(setTimeout);
@@ -72,6 +67,7 @@ fs.readdir(dir, async (err, files) => {
     for (let file of files) {
         console.log(file)
         transcriptAndRename(file);
+        // Only 900 attempts per minute
         await sleep(69)
     }
 
